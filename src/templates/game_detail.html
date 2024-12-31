@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Game Details{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto p-8 rounded-lg text-white bg-gray-900">
+    <h1 class="text-4xl font-bold mb-6 text-center text-yellow-500">{{ game.game_profile.name }}</h1>
+    <div class="text-center mb-6">
+        <p class="text-lg"><strong>Game Price:</strong> {{ game.bet_amount }}</p>
+        <p class="text-lg"><strong>Start Time:</strong> {{ game.start_time }}</p>
+        <p class="text-lg"><strong>Time Remaining:</strong> <span id="timer" class="text-red-500"></span></p>
+    </div>
+    {% if can_place_bet %}
+    <div id="bet-form" class="bg-gray-800 p-6 rounded-lg shadow mb-6">
+        <h2 class="text-2xl font-bold mb-4 text-yellow-500">Place Your Bet</h2>
+        <form method="post" class="text-center">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="color" class="block text-gray-300 mb-2">Choose a color:</label>
+                <select name="color" id="color"
+                    class="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    required>
+                    <option value="color1">Color 1</option>
+                    <option value="color2">Color 2</option>
+                </select>
+            </div>
+            <button type="submit"
+                class="mt-4 bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-2 px-4 rounded">Place
+                Bet</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="bg-gray-800 p-6 rounded-lg shadow mb-6">
+        <h2 class="text-2xl font-bold mb-4 text-red-500">Betting Closed</h2>
+        <p class="text-lg">You can no longer place bets on this game.</p>
+    </div>
+    {% endif %}
+    {% if user_bets %}
+    <div class="bg-gray-800 p-6 rounded-lg shadow mb-6">
+        <h2 class="text-2xl font-bold mb-4 text-yellow-500">Your Bets</h2>
+        <ul class="list-inside text-left">
+            {% for bet in user_bets %}
+            <li class="mb-2">
+                <p><strong>Chosen Color:</strong> {{ bet.chosen_color }}</p>
+                <p><strong>Bet Amount:</strong> {{ game.bet_amount }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    // Timer script
+    const startTime = new Date("{{ game.start_time|date:'c' }}").getTime();
+    const endTime = startTime + 5 * 60 * 1000; // 5 minutes in milliseconds
+    const timerElement = document.getElementById('timer');
+    const betForm = document.getElementById('bet-form');
+
+    function updateTimer() {
+        const now = new Date().getTime();
+        const timeLeft = endTime - now;
+
+        if (timeLeft > 0) {
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            timerElement.innerHTML = `${minutes}m ${seconds}s`;
+        } else {
+            timerElement.innerHTML = "Betting closed";
+            if (betForm) {
+                betForm.style.display = 'none'; // Hide the form when betting is closed
+            }
+        }
+    }
+
+    updateTimer(); // Initial call to display the timer immediately
+    setInterval(updateTimer, 1000);
+</script>
+{% endblock %}

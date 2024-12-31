@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center">
+    <div class="w-full max-w-md bg-gray-800 p-8 rounded-lg shadow-lg mt-24">
+        <h2 class="text-2xl font-bold text-yellow-500 mb-6 text-center">Login to HueHunt</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+            <div class="mb-4 text-red-500">
+                <ul>
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            <div class="mb-4">
+                <label for="username" class="block text-gray-300 mb-2">Username</label>
+                <input type="text" name="username" id="username"
+                    class="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    required>
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-300 mb-2">Password</label>
+                <input type="password" name="password" id="password"
+                    class="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                    required>
+            </div>
+            <button type="submit"
+                class="w-full py-2 bg-yellow-500 text-gray-900 font-bold rounded hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500">Login</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

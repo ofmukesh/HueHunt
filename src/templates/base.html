@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HueHunt{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .dropdown-menu {
+            display: none;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white">
+    {% if not request.path == '/accounts/login/' %}
+    <!-- navbar -->
+    <nav class="bg-gray-800 shadow-lg">
+        <!-- branding -->
+        <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+            <a href="{% url 'home' %}" class="flex items-center">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" class="h-10 w-10 mr-2">
+                <span class="text-2xl font-bold text-yellow-500">HueHunt</span>
+            </a>
+            {% if user.is_authenticated %}
+            <!-- dropdown-button -->
+            <div class="relative dropdown dropdown-menu-main">
+                <!-- image -->
+                <button class="flex items-center focus:outline-none border rounded-full" onclick="toggleDropdown()">
+                    <img src="https://static.vecteezy.com/system/resources/previews/005/129/844/non_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg"
+                        alt="Profile" class="h-10 w-10 rounded-full">
+                </button>
+                <!-- drodown-menu -->
+                <div id="dropdown-menu"
+                    class="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg dropdown-menu">
+                    <a href="{% url 'account' %}" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">Account</a>
+                    <a href="{% url 'payment' %}" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">Withdraw</a>
+                    <form method="post" action="{% url 'logout' %}" class="block">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+    {% endif %}
+    <div class="container mx-auto p-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script>
+        function toggleDropdown() {
+            var dropdownMenu = document.getElementById('dropdown-menu');
+            dropdownMenu.classList.toggle('show');
+        }
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropdown button')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu-main");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
