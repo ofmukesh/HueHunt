@@ -33,3 +33,7 @@ def home_view(request):
         'old_games': old_games,
     }
     return render(request, 'home.html', context)
+
+
+def forgot_password(request):
+    return render(request, 'forgot_password.html')

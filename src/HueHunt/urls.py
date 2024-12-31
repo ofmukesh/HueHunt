@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
-from .views import CustomLoginView, home_view
+from .views import CustomLoginView, home_view, forgot_password
 from account.views import account_view, payment_view
 
 urlpatterns = [
@@ -16,6 +16,7 @@ urlpatterns = [
     path('account/', login_required(account_view), name='account'),
     path('payments/', login_required(payment_view), name='payment'),
     path('', login_required(home_view), name='home'),
+    path('forgot-password/', forgot_password, name='forgot_password'),
     path('live_game/', include('live_game.urls')),
 ]
 

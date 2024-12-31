@@ -19,7 +19,7 @@
 </head>
 
 <body class="bg-gray-900 text-white">
-    {% if not request.path == '/accounts/login/' %}
+    {% if not request.path == '/accounts/login/' and not request.path == '/forgot-password/' %}
     <!-- navbar -->
     <nav class="bg-gray-800 shadow-lg">
         <!-- branding -->
@@ -39,11 +39,14 @@
                 <!-- drodown-menu -->
                 <div id="dropdown-menu"
                     class="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg dropdown-menu">
-                    <a href="{% url 'account' %}" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">Account</a>
-                    <a href="{% url 'payment' %}" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">Withdraw</a>
+                    <a href="{% url 'account' %}"
+                        class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">Account</a>
+                    <a href="{% url 'payment' %}"
+                        class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">Withdraw</a>
                     <form method="post" action="{% url 'logout' %}" class="block">
                         {% csrf_token %}
-                        <button type="submit" class="w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">
+                        <button type="submit"
+                            class="w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">
                             Logout
                         </button>
                     </form>
