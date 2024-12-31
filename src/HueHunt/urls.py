@@ -5,7 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
 from .views import CustomLoginView, home_view, forgot_password
-from account.views import account_view, payment_view
+from account.views import account_view
+from payment.views import payment_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
