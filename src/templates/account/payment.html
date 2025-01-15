@@ -3,6 +3,89 @@
 {% block title %}Payments Page{% endblock %}
 
 {% block content %}
-<h1>Payment Page</h1>
-<p>Implement your payment gateway here.</p>
+<div class="flex flex-col justify-center items-center">
+    <div class="w-full max-w-xl bg-gray-800 p-8 rounded-lg shadow-lg mt-12">
+        <h2 class="text-2xl font-bold text-yellow-500 mb-6 text-center">Payment</h2>
+
+        <!-- Current Balance -->
+        <div class="mb-4 text-center">
+            <p class="text-gray-300">Current Balance: ${{ balance }}</p>
+        </div>
+
+        <!-- Withdraw Form -->
+        <div class="mb-8">
+            <form method="post" action="{% url 'payment' %}" id="withdraw-form">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="amount" class="block text-gray-300 mb-2">Withdraw Amount</label>
+                    <input type="number" name="amount" id="amount"
+                        class="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                        required>
+                </div>
+                <div id="error-message" class="text-red-500 mb-4 hidden"></div>
+                <button type="submit" id="withdraw-button"
+                    class="w-full py-2 bg-yellow-500 text-gray-900 font-bold rounded hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 disabled:opacity-50"
+                    disabled>Withdraw</button>
+            </form>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="mt-4 text-center">
+            <a href="{% url 'home' %}" class="text-yellow-500 hover:underline">Go to Home</a> |
+            <a href="{% url 'account' %}" class="text-yellow-500 hover:underline">Go to Account</a>
+        </div>
+    </div>
+
+    <!-- Withdrawal History -->
+    <div class="mt-12    w-full">
+        <h3 class="text-xl font-bold text-yellow-500 mb-4 text-center">Withdrawal History</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-gray-700 rounded-lg">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 text-left text-yellow-500">ID</th>
+                        <th class="py-2 px-4 text-left text-yellow-500">Amount</th>
+                        <th class="py-2 px-4 text-left text-yellow-500">Status</th>
+                        <th class="py-2 px-4 text-left text-yellow-500">Created Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for withdrawal in withdrawals %}
+                    <tr class="border-b border-gray-600">
+                        <td class="py-2 px-4">{{ withdrawal.id }}</td>
+                        <td class="py-2 px-4">${{ withdrawal.amount }}</td>
+                        <td class="py-2 px-4">{{ withdrawal.status }}</td>
+                        <td class="py-2 px-4">{{ withdrawal.created_at }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="py-2 px-4 text-center">No withdrawal history available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('amount').addEventListener('input', function () {
+        var amount = parseFloat(this.value);
+        var balance = Number("{{ balance }}");
+        var withdrawButton = document.getElementById('withdraw-button');
+        var errorMessage = document.getElementById('error-message');
+        if (amount >= 100 && amount <= balance) {
+            withdrawButton.disabled = false;
+            errorMessage.classList.add('hidden');
+            errorMessage.textContent = '';
+        } else {
+            withdrawButton.disabled = true;
+            errorMessage.classList.remove('hidden');
+            if (amount < 100) {
+                errorMessage.textContent = 'Amount must be at least 100.';
+            } else if (amount > balance) {
+                errorMessage.textContent = 'Amount exceeds current balance.';
+            }
+        }
+    });
+</script>
 {% endblock %}
