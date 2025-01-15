@@ -7,7 +7,7 @@ MANAGE=src/manage.py
 APPS=account game_profile live_game user_game payment
 
 # Targets
-.PHONY: help install run migrate createsuperuser test celery_start celery_stop
+.PHONY: help install run migrate createadmin test celery_start celery_stop
 
 help:
 	@echo "Makefile for Django project"
@@ -15,7 +15,7 @@ help:
 	@echo "  make install          Install dependencies"
 	@echo "  make run              Run the Django development server"
 	@echo "  make migrate          Apply database migrations"
-	@echo "  make createsuperuser  Create a superuser"
+	@echo "  make createadmin  Create a superuser"
 	@echo "  make test             Run tests"
 	@echo "  make celery_start     Start the Celery worker"
 	@echo "  make celery_stop      Stop the Celery worker"
