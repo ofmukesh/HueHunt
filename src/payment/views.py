@@ -14,12 +14,12 @@ def payment_view(request):
 
     if request.method == 'POST':
         amount = request.POST.get('amount')
+        upi_id = request.POST.get('upi_id')
         if amount:
             amount = int(amount)
-        if amount and 100 <= amount <= balance:
-            Payment.objects.create(account=account, amount=amount)
-            account.balance -= amount
-            account.save()
+        if amount and 100 <= amount <= balance and upi_id:
+            Payment.objects.create(
+                account=account, amount=amount, upi_id=upi_id)
             return redirect('payment')
 
     context = {

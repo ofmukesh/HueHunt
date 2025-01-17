@@ -9,10 +9,6 @@ class PaymentAdmin(admin.ModelAdmin):
     list_filter = ('status', 'created_at')
     readonly_fields = ('created_at', 'amount', 'upi_id', 'account')
 
-    # def save_model(self, request, obj, form, change):
-    #     obj.bet_amount = obj.game_profile.bet_amount
-    #     super().save_model(request, obj, form, change)
-
     def get_readonly_fields(self, request, obj=None):
         if obj and obj.status == 'approved':
             return self.readonly_fields + ('status',)

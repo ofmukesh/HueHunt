@@ -19,11 +19,6 @@ urlpatterns = [
     path('', login_required(home_view), name='home'),
     path('forgot-password/', forgot_password, name='forgot_password'),
     path('live_game/', include('live_game.urls')),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = 'HueHunt.views.custom_404'
-
-urlpatterns += static(settings.STATIC_URL,
-                         document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL,
-                         document_root=settings.MEDIA_ROOT)

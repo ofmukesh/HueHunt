@@ -12,6 +12,11 @@
             <p class="text-gray-300">Current Balance: ${{ balance }}</p>
         </div>
 
+        <!-- Warning Message -->
+        <div class="mb-4 text-center">
+            <p class="text-red-500 font-bold">Please make sure your UPI ID is correct before submitting the form.</p>
+        </div>
+
         <!-- Withdraw Form -->
         <div class="mb-8">
             <form method="post" action="{% url 'payment' %}" id="withdraw-form">
@@ -19,6 +24,12 @@
                 <div class="mb-4">
                     <label for="amount" class="block text-gray-300 mb-2">Withdraw Amount</label>
                     <input type="number" name="amount" id="amount"
+                        class="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                        required>
+                </div>
+                <div class="mb-4">
+                    <label for="upi_id" class="block text-gray-300 mb-2">UPI ID</label>
+                    <input type="text" name="upi_id" id="upi_id"
                         class="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
                         required>
                 </div>
@@ -37,7 +48,7 @@
     </div>
 
     <!-- Withdrawal History -->
-    <div class="mt-12    w-full">
+    <div class="mt-12 w-full">
         <h3 class="text-xl font-bold text-yellow-500 mb-4 text-center">Withdrawal History</h3>
         <div class="overflow-x-auto">
             <table class="min-w-full bg-gray-700 rounded-lg">
@@ -45,6 +56,7 @@
                     <tr>
                         <th class="py-2 px-4 text-left text-yellow-500">ID</th>
                         <th class="py-2 px-4 text-left text-yellow-500">Amount</th>
+                        <th class="py-2 px-4 text-left text-yellow-500">UPI ID</th>
                         <th class="py-2 px-4 text-left text-yellow-500">Status</th>
                         <th class="py-2 px-4 text-left text-yellow-500">Created Date</th>
                     </tr>
@@ -54,12 +66,13 @@
                     <tr class="border-b border-gray-600">
                         <td class="py-2 px-4">{{ withdrawal.id }}</td>
                         <td class="py-2 px-4">${{ withdrawal.amount }}</td>
+                        <td class="py-2 px-4">{{ withdrawal.upi_id }}</td>
                         <td class="py-2 px-4">{{ withdrawal.status }}</td>
                         <td class="py-2 px-4">{{ withdrawal.created_at }}</td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="4" class="py-2 px-4 text-center">No withdrawal history available.</td>
+                        <td colspan="5" class="py-2 px-4 text-center">No withdrawal history available.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
