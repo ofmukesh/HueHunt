@@ -1,24 +1,24 @@
+from .views import Index
 from django.contrib import admin
-from django.urls import path, include
-from django.contrib.auth import views as auth_views
 from django.conf import settings
+from django.urls import path, include
+from payment.views import payment_view
 from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
-from .views import CustomLoginView, home_view, forgot_password
-from account.views import account_view
-from payment.views import payment_view
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('accounts/login/',
-         CustomLoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('accounts/logout/',
-         auth_views.LogoutView.as_view(next_page='/accounts/login/'), name='logout'),
-    path('account/', login_required(account_view), name='account'),
-    path('payments/', login_required(payment_view), name='payment'),
-    path('', login_required(home_view), name='home'),
-    path('forgot-password/', forgot_password, name='forgot_password'),
+    # Custom views
+    path('', login_required(Index.as_view()), name='home'),
+
+    # app urls
+    path('account/', include('account.urls')),
+    path('payments/', include('payment.urls')),
     path('live_game/', include('live_game.urls')),
+
+    # Django admin
+    path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+# Custom 404 page handler
 handler404 = 'HueHunt.views.custom_404'

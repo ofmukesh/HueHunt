@@ -3,3 +3,8 @@ PAYMENT_STATUS_CHOICES = [
     ('approved', 'Approved'),
     ('rejected', 'Rejected')
 ]
+
+COLOR_CHOICES = [
+    ('red', 'Red'),
+    ('blue', 'Blue'),
+]

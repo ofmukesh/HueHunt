@@ -36,4 +36,4 @@ def game_detail(request, game_id):
     else:
         form = BetForm()
 
-    return render(request, 'game_detail.html', {'game': game, 'form': form, 'user_bets': user_bets, 'can_place_bet': can_place_bet})
+    return render(request, 'game/game_detail.html', {'game': game, 'form': form, 'user_bets': user_bets, 'can_place_bet': can_place_bet})

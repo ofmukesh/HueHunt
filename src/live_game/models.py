@@ -1,12 +1,7 @@
 import uuid
 from django.db import models
 from game_profile.models import GameProfile
-from django.utils import timezone
-
-COLOR_CHOICES = [
-    ('red', 'Red'),
-    ('blue', 'Blue'),
-]
+from utils.constants import COLOR_CHOICES
 
 
 class LiveGame(models.Model):
