@@ -9,10 +9,6 @@ class AccountManager(models.Manager):
     def get_by_user(self, user):
         return self.get(user=user)
 
-    # Get account by id
-    def get_by_id(self, acc_id):
-        return self.get(pk=acc_id)
-
 
 # Account model is used to store user account details
 class Account(models.Model):

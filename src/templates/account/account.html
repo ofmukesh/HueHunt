@@ -4,6 +4,11 @@
 
 {% block content %}
 <div class="max-w-2xl mx-auto p-8 rounded-lg text-white">
+    <!-- Back Button -->
+    <div class="w-full max-w-xl mt-4">
+        <a href="{% url 'home' %}" class="text-blue-500 hover:underline">&larr; Back to Home</a>
+    </div>
+
     <h1 class="text-3xl font-bold mb-6 text-center">Account Info</h1>
     <div class="flex flex-col w-full bg-gray-800 p-6 rounded-lg shadow mb-6">
         <div class="flex w-full text-center items-center mb-4">
@@ -27,7 +32,9 @@
             <p class="w-1/3">{{ user.date_joined|date:"F j, Y" }}</p>
         </div>
     </div>
+
     <div class="flex items-center justify-center gap-x-4 text-black font-bold">
+        <!-- logout button -->
         <div class="text-center bg-yellow-500 py-2 px-6 rounded hover:bg-yellow-600">
             <form method="post" action="{% url 'logout' %}" class="block">
                 {% csrf_token %}
@@ -36,10 +43,10 @@
                 </button>
             </form>
         </div>
-    </div>
-    <div class="mt-4 text-center">
-        <a href="{% url 'home' %}" class="text-yellow-500 hover:underline">Go to Home</a> |
-        <a href="{% url 'payment' %}" class="text-yellow-500 hover:underline">Go to Payment</a>
+        <!-- payment url -->
+        <div class="text-center bg-yellow-500 py-2 px-6 rounded hover:bg-yellow-600">
+            <a href="{% url 'payment' %}" class="hover:underline">Manage Payments</a>
+        </div>
     </div>
 </div>
 {% endblock %}

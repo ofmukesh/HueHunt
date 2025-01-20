@@ -10,6 +10,6 @@ class PaymentAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'amount', 'upi_id', 'account')
 
     def get_readonly_fields(self, request, obj=None):
-        if obj and obj.status == 'approved':
+        if obj and (obj.status == 'approved' or obj.status == 'rejected'):
             return self.readonly_fields + ('status',)
         return self.readonly_fields

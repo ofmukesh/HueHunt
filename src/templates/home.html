@@ -6,6 +6,12 @@
 <div class="max-w-4xl mx-auto p-8 rounded-lg text-white">
     <h1 class="text-3xl font-bold mb-6 text-center">Welcome to HueHunt</h1>
 
+    <!-- Account and Withdraw Links -->
+    <div class="flex justify-end mb-6">
+        <a href="{% url 'account' %}" class="text-blue-500 hover:underline mr-4">Account</a>
+        <a href="{% url 'payment' %}" class="text-blue-500 hover:underline">Withdraw</a>
+    </div>
+
     <!-- Match Statistics -->
     <div class="bg-gray-800 p-6 rounded-lg shadow mb-8">
         <h2 class="text-2xl font-bold mb-4 text-yellow-500">Match Statistics</h2>

@@ -1,29 +1,56 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 from .models import Payment
+from django.views import View
+from .forms import PaymentForm
 from account.models import Account
+from django.shortcuts import render, redirect
+from django.core.exceptions import ValidationError
 
 
-@login_required
-def payment_view(request):
-    user = request.user
-    account = Account.objects.get(user=user)
-    balance = account.balance
-    withdrawals = Payment.objects.filter(
-        account=account).order_by('-created_at')
+class PaymentView(View):
+    # Get method to render the payment template
+    def get(self, request):
+        user = request.user  # Get the logged in user
+        account = Account.objects.get_by_user(
+            user=user)  # Get the account of the user
 
-    if request.method == 'POST':
-        amount = request.POST.get('amount')
-        upi_id = request.POST.get('upi_id')
-        if amount:
-            amount = int(amount)
-        if amount and 100 <= amount <= balance and upi_id:
-            Payment.objects.create(
-                account=account, amount=amount, upi_id=upi_id)
-            return redirect('payment')
+        # Get the balance and withdrawals of the user
+        withdrawals = Payment.objects.get_history_by_account(account)
 
-    context = {
-        'balance': balance,
-        'withdrawals': withdrawals,
-    }
-    return render(request, 'account/payment.html', context)
+        # Context to be passed to the template
+        context = {
+            'balance': account.balance,
+            'withdrawals': withdrawals,
+            'form': PaymentForm(balance=account.balance)
+        }
+
+        # Render the payment template
+        return render(request, 'account/payment.html', context)
+
+    def post(self, request):
+        # Get the user account and balance
+        user = request.user
+        account = Account.objects.get_by_user(user=user)
+        balance = account.balance
+
+        # Process the form
+        form = PaymentForm(request.POST, balance=balance)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            upi_id = form.cleaned_data['upi_id']
+
+            # Create a payment
+            try:
+                Payment.objects.create(
+                    account=account, amount=amount, upi_id=upi_id)
+                return redirect('payment')  # Redirect to the payment page
+            except ValidationError as e:
+                form.add_error(None, e.message)
+
+        # If form is not valid, re-render the page with the form errors
+        withdrawals = Payment.objects.get_history_by_account(account)
+        context = {
+            'balance': balance,
+            'withdrawals': withdrawals,
+            'form': form
+        }
+        return render(request, 'account/payment.html', context)

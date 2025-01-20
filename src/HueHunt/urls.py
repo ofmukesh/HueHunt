@@ -2,7 +2,6 @@ from .views import Index
 from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include
-from payment.views import payment_view
 from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
 
