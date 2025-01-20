@@ -30,36 +30,60 @@
     <!-- Live Games -->
     <div class="bg-gray-800 p-6 rounded-lg shadow mb-8">
         <h2 class="text-2xl font-bold mb-4 text-yellow-500">Live Games</h2>
-        <ul>
+        <div class="flex grid grid-cols-1 md:grid-cols-4 gap-4">
             {% for game in live_games %}
-            <li class="mb-4 p-4 bg-gray-700 rounded-lg shadow">
+            <div class="bg-gray-700 p-6 rounded-lg shadow hover:bg-gray-600 transition duration-300">
                 <a href="{% url 'game_detail' game.id %}"
-                    class="text-xl font-bold text-blue-500 hover:underline">{{ game.game_profile.name }}</a>
-                <p>Status: {{ game.status }}</p>
-                <p>Started at: {{ game.start_time }}</p>
-            </li>
+                    class="text-xl font-bold text-blue-500 hover:underline block mb-2">
+                    {{ game.game_profile.name }}
+                </a>
+                <p class="text-sm text-gray-400 mb-1"> {{ game.game_profile.bet_amount }} HC
+                </p>
+            </div>
             {% empty %}
-            <p>No live games at the moment.</p>
+            <p class="col-span-1 md:col-span-2 text-center text-gray-400">No live games at the moment.</p>
             {% endfor %}
-        </ul>
+        </div>
     </div>
 
     <!-- Old Played Games -->
     <div class="bg-gray-800 p-6 rounded-lg shadow">
         <h2 class="text-2xl font-bold mb-4 text-yellow-500">Old Played Games</h2>
-        <ul>
-            {% for game in old_games %}
-            <li class="mb-4 p-4 bg-gray-700 rounded-lg shadow">
-                <h3 class="text-xl font-bold text-yellow-500">{{ game.game_profile.name }}</h3>
-                <p><strong>Result:</strong> {{ game.game.result }}</p>
-                <p><strong>Bet Color:</strong> {{ game.chosen_color }}</p>
-                <p><strong>Bet Amount:</strong> {{ game.game.bet_amount }}</p>
-                <p><strong>Win Reward:</strong> {{ game.game.win_reward }}</p>
-            </li>
-            {% empty %}
-            <p>No old games found.</p>
-            {% endfor %}
-        </ul>
+        <table class="min-w-full bg-gray-700 rounded-lg shadow overflow-x-auto max-h-40 overflow-y-auto">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 text-left">Game</th>
+                    <th class="py-2 px-4 text-left">Result</th>
+                    <th class="py-2 px-4 text-left">Choosen Color</th>
+                    <th class="py-2 px-4 text-left">Win / Loss Return </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in old_games %}
+                <tr class="border-b border-gray-600">
+                    <td class="py-2 px-4">{{ game.game.game_profile.name }}</td>
+                    <td class="py-2 px-4">
+                        <span
+                            class="{% if game.game.result == game.chosen_color %}text-green-500{% else %}text-red-500{% endif %}">
+                            {{ game.game.result }}
+                        </span>
+                    </td>
+                    <td class="py-2 px-4">{{ game.chosen_color }}</td>
+                    <td class="py-2 px-4">{{ game.game.bet_amount }} HC</td>
+                    <td class="py-2 px-4">
+                        <span
+                            class="{% if game.game.result == game.chosen_color %}text-green-500{% else %}text-red-500{% endif %}">
+                            {{ game.game.game_profile.win_reward }} HC
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="py-2 px-4 text-center">No old games found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

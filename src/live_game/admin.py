@@ -8,8 +8,7 @@ class LiveGameAdmin(admin.ModelAdmin):
                     'status', 'result', 'bet_amount', 'created_at')
     list_filter = ('status', 'result')
     search_fields = ('game_profile__name',)
-    readonly_fields = ('bet_amount', 'end_time', 'status',
-                       'result')  # Make fields read-only
+    readonly_fields = ('bet_amount', 'end_time')  # Make fields read-only
 
     def save_model(self, request, obj, form, change):
         obj.bet_amount = obj.game_profile.bet_amount
