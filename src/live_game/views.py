@@ -1,12 +1,13 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from .forms import BetForm
+from .models import LiveGame
+from datetime import timedelta
 from django.urls import reverse
 from django.utils import timezone
-from .models import LiveGame
 from user_game.models import UserGame
-from .forms import BetForm
 from account.models import Account as Acc
-from datetime import timedelta
+from utils.constants import GAME_RUN_TIME, COLOR_CHOICES
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 
 
 def game_detail(request, game_id):
@@ -19,7 +20,7 @@ def game_detail(request, game_id):
         user_bets = UserGame.objects.filter(user=account, game=game)
 
     # Check if the game is completed or the betting time has ended
-    if game.status == 'completed' or (game.start_time + timedelta(minutes=5)) < timezone.now():
+    if game.status == 'completed' or (game.start_time + timedelta(minutes=GAME_RUN_TIME)) < timezone.now():
         can_place_bet = False
 
     if request.method == 'POST' and can_place_bet:
@@ -36,4 +37,4 @@ def game_detail(request, game_id):
     else:
         form = BetForm()
 
-    return render(request, 'game/game_detail.html', {'game': game, 'form': form, 'user_bets': user_bets, 'can_place_bet': can_place_bet})
+    return render(request, 'game/game_detail.html', {'game': game, 'form': form, 'user_bets': user_bets, 'can_place_bet': can_place_bet, 'game_run_time': GAME_RUN_TIME, 'color_choices': COLOR_CHOICES})

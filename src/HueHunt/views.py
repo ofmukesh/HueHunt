@@ -16,11 +16,15 @@ class Index(View):
     def get(self, request):
         user = request.user
         account = Account.objects.get(user=user)
-        matches_played = account.matches_played
-        matches_won = account.matches_won
-        live_games = LiveGame.objects.filter(status='ongoing')
-        old_games = UserGame.objects.filter(
-            user=account, game__status='completed')
+        matches_played = account.matches_played  # match played by user
+        matches_won = account.matches_won  # match won by user
+
+        # get ongoing live games
+        live_games = LiveGame.objects.get_ongoing_games()
+
+        # get user's played completed games
+        old_games = UserGame.objects.get_completed_games(
+            acc=account)
 
         context = {
             'matches_played': matches_played,

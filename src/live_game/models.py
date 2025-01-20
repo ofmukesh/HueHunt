@@ -4,6 +4,11 @@ from game_profile.models import GameProfile
 from utils.constants import COLOR_CHOICES
 
 
+class LiveGameManager(models.Manager):
+    def get_ongoing_games(self):
+        return self.filter(status='ongoing').order_by('-created_at')
+
+
 class LiveGame(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     game_profile = models.ForeignKey(GameProfile, on_delete=models.CASCADE)
@@ -18,6 +23,8 @@ class LiveGame(models.Model):
     bet_amount = models.DecimalField(
         max_digits=10, decimal_places=2, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = LiveGameManager()
 
     def __str__(self):
         return f"{self.game_profile.name} - {self.status}"

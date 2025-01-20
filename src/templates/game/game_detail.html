@@ -20,8 +20,9 @@
                 <select name="color" id="color"
                     class="w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
                     required>
-                    <option value="color1">Color 1</option>
-                    <option value="color2">Color 2</option>
+                    {% for color in color_choices %}
+                    <option value="{{ color.0 }}">{{ color.1 }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <button type="submit"
@@ -53,7 +54,7 @@
 <script>
     // Timer script
     const startTime = new Date("{{ game.start_time|date:'c' }}").getTime();
-    const endTime = startTime + 5 * 60 * 1000; // 5 minutes in milliseconds
+    const endTime = startTime + Number("{{game_run_time}}") * 60 * 1000;
     const timerElement = document.getElementById('timer');
     const betForm = document.getElementById('bet-form');
 
