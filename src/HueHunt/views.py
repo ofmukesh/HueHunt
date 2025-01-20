@@ -1,4 +1,5 @@
 from django.views import View
+from django.conf import settings
 from account.models import Account
 from django.shortcuts import render
 from live_game.models import LiveGame
@@ -26,5 +27,6 @@ class Index(View):
             'matches_won': matches_won,
             'live_games': live_games,
             'old_games': old_games,
+            'debug': settings.DEBUG,
         }
         return render(request, 'home.html', context)
