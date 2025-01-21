@@ -2,7 +2,7 @@
 
 # Variables
 PYTHON=python3
-PIP=pip3
+PIP=pip
 MANAGE=src/manage.py
 APPS=account game_profile live_game user_game payment
 
