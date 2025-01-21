@@ -10,6 +10,13 @@
         <p class="text-lg"><strong>Start Time:</strong> {{ game.start_time }}</p>
         <p class="text-lg"><strong>Time Remaining:</strong> <span id="timer" class="text-red-500"></span></p>
     </div>
+    {% if messages %}
+    <div class="mb-4">
+        {% for message in messages %}
+        <div class="bg-red-500 text-white p-2 rounded mb-2">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
     {% if can_place_bet %}
     <div id="bet-form" class="bg-gray-800 p-6 rounded-lg shadow mb-6">
         <h2 class="text-2xl font-bold mb-4 text-yellow-500">Place Your Bet</h2>

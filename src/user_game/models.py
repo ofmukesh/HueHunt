@@ -21,9 +21,3 @@ class UserGame(models.Model):
 
     def __str__(self):
         return f"{self.user.user.username} - {self.game} - {self.chosen_color}"
-
-    def save(self, *args, **kwargs):
-        if not self.pk:  # Check if this is a new instance
-            self.user.matches_played += 1
-            self.user.save()
-        super().save(*args, **kwargs)

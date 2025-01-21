@@ -5,7 +5,7 @@ from .models import GameProfile
 @admin.register(GameProfile)
 class GameProfileAdmin(admin.ModelAdmin):
     list_display = ('name', 'bet_amount', 'win_reward',
-                    'loss_return', 'is_active', 'created_at', 'updated_at')
+                    'is_active', 'created_at', 'updated_at')
     search_fields = ('name',)
     readonly_fields = ('created_at', 'updated_at')
 

@@ -32,27 +32,33 @@
                 {% endif %}
             </a>
             {% if user.is_authenticated %}
-            <!-- dropdown-button -->
-            <div class="relative dropdown dropdown-menu-main">
-                <!-- image -->
-                <button class="flex items-center focus:outline-none border rounded-full" onclick="toggleDropdown()">
-                    <img src="https://static.vecteezy.com/system/resources/previews/005/129/844/non_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg"
-                        alt="Profile" class="h-10 w-10 rounded-full">
-                </button>
-                <!-- drodown-menu -->
-                <div id="dropdown-menu"
-                    class="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg dropdown-menu">
-                    <a href="{% url 'account' %}"
-                        class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">Account</a>
-                    <a href="{% url 'payment' %}"
-                        class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">Withdraw</a>
-                    <form method="post" action="{% url 'logout' %}" class="block">
-                        {% csrf_token %}
-                        <button type="submit"
-                            class="w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">
-                            Logout
-                        </button>
-                    </form>
+            <div class="flex items-center">
+                <!-- user balance -->
+                <div class="mr-4">
+                    <p class="text-lg font-bold text-yellow-500">Balance: {{ user.account.balance }} HC</p>
+                </div>
+                <!-- dropdown-button -->
+                <div class="relative dropdown dropdown-menu-main">
+                    <!-- image -->
+                    <button class="flex items-center focus:outline-none border rounded-full" onclick="toggleDropdown()">
+                        <img src="https://static.vecteezy.com/system/resources/previews/005/129/844/non_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg"
+                            alt="Profile" class="h-10 w-10 rounded-full">
+                    </button>
+                    <!-- drodown-menu -->
+                    <div id="dropdown-menu"
+                        class="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-lg dropdown-menu">
+                        <a href="{% url 'account' %}"
+                            class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">Account</a>
+                        <a href="{% url 'payment' %}"
+                            class="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">Withdraw</a>
+                        <form method="post" action="{% url 'logout' %}" class="block">
+                            {% csrf_token %}
+                            <button type="submit"
+                                class="w-full text-left px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
             {% endif %}

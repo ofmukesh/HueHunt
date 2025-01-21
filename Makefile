@@ -17,8 +17,6 @@ help:
 	@echo "  make migrate          Apply database migrations"
 	@echo "  make createadmin  Create a superuser"
 	@echo "  make test             Run tests"
-	@echo "  make celery_start     Start the Celery worker"
-	@echo "  make celery_stop      Stop the Celery worker"
 
 install:
 	$(PIP) install -r requirements.txt
@@ -35,8 +33,11 @@ createadmin:
 test:
 	$(PYTHON) $(MANAGE) test
 
-celery_start:
-	celery -A src worker --loglevel=info &
+cronadd:
+	$(PYTHON) $(MANAGE) crontab add
 
-celery_stop:
-	pkill -f 'celery -A src worker'
+cronls:
+	$(PYTHON) $(MANAGE) crontab show
+
+cronrm:
+	$(PYTHON) $(MANAGE) crontab remove

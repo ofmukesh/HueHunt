@@ -1,6 +1,7 @@
+import os
 from pathlib import Path
 from dotenv import load_dotenv
-import os
+from utils.constants import GAME_RUN_TIME
 
 load_dotenv()
 
@@ -34,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
 
     # apps
     'account',
@@ -137,3 +139,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/account/login/'
 LOGOUT_REDIRECT_URL = '/account/login/'
+
+
+# Cron Jobs
+CRONJOBS = [
+    ('*/1 * * * *', 'HueHunt.tasks.complete_games'),
+    ('*/5 * * * *', 'HueHunt.tasks.add_games'),
+]

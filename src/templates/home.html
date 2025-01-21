@@ -69,11 +69,14 @@
                         </span>
                     </td>
                     <td class="py-2 px-4">{{ game.chosen_color }}</td>
-                    <td class="py-2 px-4">{{ game.game.bet_amount }} HC</td>
                     <td class="py-2 px-4">
                         <span
                             class="{% if game.game.result == game.chosen_color %}text-green-500{% else %}text-red-500{% endif %}">
+                            {% if game.game.result == game.chosen_color %}
                             {{ game.game.game_profile.win_reward }} HC
+                            {% else %}
+                            -{{ game.game.bet_amount }} HC
+                            {% endif %}
                         </span>
                     </td>
                 </tr>
