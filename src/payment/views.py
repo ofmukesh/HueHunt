@@ -1,6 +1,6 @@
-from .models import Payment
+from .models import Payment,AddMoneyRequest
 from django.views import View
-from .forms import PaymentForm
+from .forms import PaymentForm,AddMoneyForm
 from account.models import Account
 from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
@@ -54,3 +54,39 @@ class PaymentView(View):
             'form': form
         }
         return render(request, 'account/payment.html', context)
+
+
+class AddMoneyView(View):
+    def get(self, request):
+        user = request.user
+        account = Account.objects.get_by_user(user=user)
+        requests = AddMoneyRequest.objects.filter(account=account).order_by('-created_at')
+        
+        context = {
+            'balance': account.balance,
+            'form': AddMoneyForm(),
+            'requests': requests
+        }
+        return render(request, 'account/add_money.html', context)
+
+    def post(self, request):
+        user = request.user
+        account = Account.objects.get_by_user(user=user)
+        form = AddMoneyForm(request.POST)
+
+        if form.is_valid():
+            AddMoneyRequest.objects.create(
+                account=account,
+                amount=form.cleaned_data['amount'],
+                transaction_id=form.cleaned_data['transaction_id'],
+                name=form.cleaned_data['name']
+            )
+            return redirect('add_money')
+
+        requests = AddMoneyRequest.objects.filter(account=account).order_by('-created_at')
+        context = {
+            'balance': account.balance,
+            'form': form,
+            'requests': requests
+        }
+        return render(request, 'account/add_money.html', context)

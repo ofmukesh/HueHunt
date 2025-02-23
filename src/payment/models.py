@@ -52,3 +52,22 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"{self.account.user.username} - {self.amount} - {self.status}"
+
+
+class AddMoneyRequest(models.Model):
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    amount = models.IntegerField()
+    transaction_id = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(
+        max_length=20, choices=PAYMENT_STATUS_CHOICES, default='pending')
+
+    def save(self, *args, **kwargs):
+        if self.status == 'approved' and not self.pk:
+            self.account.balance += self.amount
+            self.account.save()
+        super(AddMoneyRequest, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.account.user.username} - {self.amount} - {self.status}"

@@ -98,6 +98,7 @@ def complete_live_games():
             for user_bet in user_bets:
                 if user_bet.chosen_color == lowest_bet_color:
                     user_bet.user.balance += game.game_profile.win_reward
+                    user_bet.user.matches_won+=1
                     user_bet.user.save()
 
             # update the game status

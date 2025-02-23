@@ -19,3 +19,14 @@ class PaymentForm(forms.Form):
         if amount > self.balance:
             raise forms.ValidationError('Amount exceeds current balance.')
         return amount
+
+
+class AddMoneyForm(forms.Form):
+    amount = forms.IntegerField(min_value=100, label='Amount')
+    transaction_id = forms.CharField(max_length=100, label='Transaction ID')
+    name = forms.CharField(max_length=100, label='Name on Transaction')
+
+    def __init__(self, *args, **kwargs):
+        super(AddMoneyForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'w-full p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500'

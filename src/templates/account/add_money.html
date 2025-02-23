@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Add Money{% endblock %}
+
+{% block content %}
+<div class="flex flex-col justify-center items-center">
+    <!-- Back Button -->
+    <div class="w-full max-w-xl mt-4">
+        <a href="{% url 'home' %}" class="text-blue-500 hover:underline">&larr; Back to Home</a>
+    </div>
+
+    <div class="w-full max-w-xl bg-gray-800 p-8 rounded-lg shadow-lg mt-4">
+        <h2 class="text-2xl font-bold text-yellow-500 mb-6 text-center">Add Money</h2>
+
+        <!-- Current Balance -->
+        <div class="mb-4 text-center">
+            <p class="text-gray-300">Current Balance: {{ balance }} HC</p>
+        </div>
+
+        <!-- Add Money Form -->
+        <div class="mb-8">
+            <form method="post" class="gap-y-2 flex flex-col" action="{% url 'add_money' %}">
+                {% csrf_token %}
+                {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-gray-300 mb-2">{{ field.label }}</label>
+                    {{ field }}
+                    {% for error in field.errors %}
+                    <p class="text-red-500">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                {% if form.non_field_errors %}
+                <div class="text-red-500 mb-4">
+                    {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <button type="submit"
+                    class="w-full py-2 mt-6 bg-yellow-500 text-gray-900 font-bold rounded hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                    Submit Request
+                </button>
+            </form>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="mt-4 text-center">
+            <a href="{% url 'payment' %}" class="text-yellow-500 hover:underline">Go to Withdrawals</a>
+        </div>
+    </div>
+
+    <!-- Request History -->
+    <div class="mt-12 w-full">
+        <h3 class="text-xl font-bold text-yellow-500 mb-4 text-center">Add Money History</h3>
+        <div class="overflow-x-auto max-h-40 overflow-y-auto">
+            <table class="min-w-full bg-gray-700 rounded-lg">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 text-left text-yellow-500">Amount</th>
+                        <th class="py-2 px-4 text-left text-yellow-500">Transaction ID</th>
+                        <th class="py-2 px-4 text-left text-yellow-500">Name</th>
+                        <th class="py-2 px-4 text-left text-yellow-500">Status</th>
+                        <th class="py-2 px-4 text-left text-yellow-500">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in requests %}
+                    <tr class="border-b border-gray-600">
+                        <td class="py-2 px-4">{{ request.amount }} HC</td>
+                        <td class="py-2 px-4">{{ request.transaction_id }}</td>
+                        <td class="py-2 px-4">{{ request.name }}</td>
+                        <td class="py-2 px-4">{{ request.status }}</td>
+                        <td class="py-2 px-4">{{ request.created_at }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="py-2 px-4 text-center">No requests available.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
