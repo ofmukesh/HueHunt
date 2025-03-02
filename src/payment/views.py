@@ -4,6 +4,7 @@ from .forms import PaymentForm,AddMoneyForm
 from account.models import Account
 from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
+from _setting.models import ImageSetting
 
 
 class PaymentView(View):
@@ -58,11 +59,13 @@ class PaymentView(View):
 
 class AddMoneyView(View):
     def get(self, request):
+        QR_IMAGE=ImageSetting.objects.get(id='add_money_qr')
         user = request.user
         account = Account.objects.get_by_user(user=user)
         requests = AddMoneyRequest.objects.filter(account=account).order_by('-created_at')
         
         context = {
+            'image': QR_IMAGE.image,
             'balance': account.balance,
             'form': AddMoneyForm(),
             'requests': requests
@@ -70,6 +73,7 @@ class AddMoneyView(View):
         return render(request, 'account/add_money.html', context)
 
     def post(self, request):
+        QR_IMAGE=ImageSetting.objects.get(id='add_money_qr')
         user = request.user
         account = Account.objects.get_by_user(user=user)
         form = AddMoneyForm(request.POST)
@@ -85,6 +89,7 @@ class AddMoneyView(View):
 
         requests = AddMoneyRequest.objects.filter(account=account).order_by('-created_at')
         context = {
+            'image': QR_IMAGE.image,
             'balance': account.balance,
             'form': form,
             'requests': requests

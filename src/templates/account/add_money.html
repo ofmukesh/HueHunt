@@ -12,6 +12,13 @@
     <div class="w-full max-w-xl bg-gray-800 p-8 rounded-lg shadow-lg mt-4">
         <h2 class="text-2xl font-bold text-yellow-500 mb-6 text-center">Add Money</h2>
 
+        <!-- QR Code Image -->
+        <div class="mb-6 flex flex-col items-center">
+            <p class="text-gray-300 mb-3">Scan this QR code to add money to your account:</p>
+            <img src="{{ image.url }}" alt="Payment QR Code" class="w-48 h-48 mb-2">
+            <p class="text-sm text-gray-400">After payment, fill the form below with transaction details</p>
+        </div>
+
         <!-- Current Balance -->
         <div class="mb-4 text-center">
             <p class="text-gray-300">Current Balance: {{ balance }} HC</p>

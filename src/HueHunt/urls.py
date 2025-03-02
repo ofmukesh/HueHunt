@@ -17,7 +17,7 @@ urlpatterns = [
 
     # Django admin
     path('admin/', admin.site.urls),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Custom 404 page handler
 handler404 = 'HueHunt.views.custom_404'

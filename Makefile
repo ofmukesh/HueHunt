@@ -4,7 +4,7 @@
 PYTHON=python3
 PIP=pip
 MANAGE=src/manage.py
-APPS=account game_profile live_game user_game payment
+APPS=account game_profile live_game user_game payment _setting
 
 # Targets
 .PHONY: help install run migrate createadmin test celery_start celery_stop

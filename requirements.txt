@@ -9,6 +9,7 @@ click-repl==0.3.0
 Django==5.1.4
 django-crontab==0.7.1
 kombu==5.4.2
+pillow==11.1.0
 prompt_toolkit==3.0.48
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
