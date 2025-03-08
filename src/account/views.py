@@ -1,6 +1,9 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
+from django.contrib.auth import login
+from .forms import RegistrationForm
+from .models import Account
 
 
 # Account view
@@ -31,3 +34,19 @@ def forgot_password(request):
     View to render the forgot password page.
     """
     return render(request, 'account/forgot_password.html')
+
+
+# Register view
+class RegisterView(View):
+    def get(self, request):
+        form = RegistrationForm()
+        return render(request, 'registration/register.html', {'form': form})
+
+    def post(self, request):
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            Account.objects.create(user=user, balance=0)
+            login(request, user)
+            return redirect('/')
+        return render(request, 'registration/register.html', {'form': form})
