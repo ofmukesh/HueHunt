@@ -22,6 +22,7 @@ class LiveGame(models.Model):
         max_length=4, choices=COLOR_CHOICES, blank=True, null=True)
     bet_amount = models.DecimalField(
         max_digits=10, decimal_places=2, editable=False)
+    is_manually_set = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects = LiveGameManager()

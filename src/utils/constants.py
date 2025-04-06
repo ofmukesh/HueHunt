@@ -10,4 +10,4 @@ COLOR_CHOICES = [
 ]
 
 
-GAME_RUN_TIME = 5  # in minutes
+GAME_RUN_TIME = 3  # in minutes

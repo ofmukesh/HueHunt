@@ -73,7 +73,7 @@ def create_new_games():
 
 def complete_live_games():
     # get all current ongoing live games
-    games = LiveGame.objects.filter(status='ongoing')
+    games = LiveGame.objects.filter(status='ongoing',is_manually_set=False)
 
     # iterate through all the games
     for game in games:
@@ -104,3 +104,28 @@ def complete_live_games():
             # update the game status
             game.status = 'completed'
             game.save()
+
+def complete_manual_game(request,game_id,result):
+    if request.user.is_authenticated and request.user.is_superuser:
+        game = LiveGame.objects.get(id=game_id)
+
+        if game.is_manually_set:
+
+            # get all the user bets for the game
+            user_bets = UserGame.objects.filter(game=game)
+
+            # set the lowest bet color as the winning color
+            game.result = result
+
+            # now add the winning amount to the user account
+            for user_bet in user_bets:
+                if user_bet.chosen_color == game.result:
+                    user_bet.user.balance += game.game_profile.win_reward
+                    user_bet.user.matches_won+=1
+                    user_bet.user.save()
+
+            # update the game status
+            game.status = 'completed'
+            game.save()
+
+            return HttpResponseRedirect(reverse('game_detail', args=[game_id]))

@@ -10,6 +10,25 @@
         <p class="text-lg"><strong>Start Time:</strong> {{ game.start_time }}</p>
         <p class="text-lg"><strong>Time Remaining:</strong> <span id="timer" class="text-red-500"></span></p>
     </div>
+
+    {% if game.is_manually_set %}
+    {% if not game.result %}
+    {% if request.user.is_superuser %}
+    <div class="bg-gray-800 p-6 rounded-lg shadow mb-6">
+        <h2 class="text-2xl font-bold mb-4 text-yellow-500">Manual Result</h2>
+        <p class="text-lg">The result of this game has been set manually.</p>
+        <div class="flex justify-center mt-4 gap-x-10">
+            {% for color in color_choices %}
+            <a href="/live_game/game/{{game.id}}/complete_manual_game/{{color.0}}"
+                class="bg-{{ color.0 }}-900 px-4 py-2 rounded" value="{{ color.0 }}">{{ color.1 }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% endif %}
+
+
     {% if messages %}
     <div class="mb-4">
         {% for message in messages %}
